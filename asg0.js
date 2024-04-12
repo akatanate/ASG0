@@ -111,6 +111,10 @@ function handleDrawOperationEvent(ctx){
     angleBetween(v1, v2);
   }
 
+  else if (option === "Area"){
+    areaTriangle(v1, v2);
+  }
+
   else{
     console.log("ELSE");
   }
@@ -125,7 +129,13 @@ function angleBetween(v1, v2){
   //need to bind properly (formula a little off)
 
   var angle = Math.acos(cos_alpha) * (180 / Math.PI);
-  console.log(angle);
+  console.log(angle); 
+}
+
+function areaTriangle(v1,v2){
+  var cross = Vector3.cross(v1, v2);
+  var mag = cross.magnitude();
+  console.log(mag / 2); // also kinda off
 }
 
 function main() {
