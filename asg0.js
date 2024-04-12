@@ -107,10 +107,25 @@ function handleDrawOperationEvent(ctx){
     console.log("Magnitude v1: ", v2.magnitude());
   }
 
+  else if (option === "Angle Between"){
+    angleBetween(v1, v2);
+  }
+
   else{
     console.log("ELSE");
   }
   // For mul and div operations, draw two green vectors v3 = v1 * s and v4 = v2 * s.
+}
+
+function angleBetween(v1, v2){
+  var dot_prod = Vector3.dot(v1, v2);
+  var mag1 = v1.magnitude();
+  var mag2 = v2.magnitude();
+  var cos_alpha = dot_prod / (mag1* mag2);
+  //need to bind properly (formula a little off)
+
+  var angle = Math.acos(cos_alpha) * (180 / Math.PI);
+  console.log(angle);
 }
 
 function main() {
