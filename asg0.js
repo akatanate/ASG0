@@ -3,6 +3,9 @@ var v1 = new Vector3([2.25, 2.25, 0]);
 var v2 = new Vector3([2.25, 2.25, 0]);
 var v3 = new Vector3([2.25, 2.25, 0]);
 
+var v4 = new Vector3([2.25, 2.25, 0]);
+var v5 = new Vector3([2.25, 2.25, 0]);
+
 
 // vector3 v and a string color
 function drawVector(v, color, ctx){
@@ -86,9 +89,26 @@ function handleDrawOperationEvent(ctx){
     var v3 = v1.div(scal);
     drawVector(v3, "green", ctx);
   }
-  else{
+  else if (option === "Divide"){
     var v3 = v1.mul(scal);
     drawVector(v3, "green", ctx);
+  }
+
+  //Pt 6. 
+  else if (option === "Normalize"){
+    var v4 = v1.normalize();
+    var v5 = v2.normalize();
+
+    drawVector(v4, "green", ctx);
+    drawVector(v5, "green", ctx);
+  }
+  else if (option === "Magnitude"){
+    console.log("Magnitude v1: ", v1.magnitude());
+    console.log("Magnitude v1: ", v2.magnitude());
+  }
+
+  else{
+    console.log("ELSE");
   }
   // For mul and div operations, draw two green vectors v3 = v1 * s and v4 = v2 * s.
 }
