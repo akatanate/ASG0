@@ -1,4 +1,4 @@
-// Instantiate vector v1 using the Vector3 class from cuon-matrix.js
+// Instantiate vectors for operations
 var v1 = new Vector3([2.25, 2.25, 0]);
 var v2 = new Vector3([2.25, 2.25, 0]);
 var v3 = new Vector3([2.25, 2.25, 0]);
@@ -7,75 +7,52 @@ var v4 = new Vector3([2.25, 2.25, 0]);
 var v5 = new Vector3([2.25, 2.25, 0]);
 
 
-// vector3 v and a string color
+// sets vector color and draws it
 function drawVector(v, color, ctx){
-  console.log("draw_vector");
-       // Set color
        ctx.strokeStyle = color;
     
-       // Begin a new path
        ctx.beginPath();
-       
-       // Move to the center of the canvas
        ctx.moveTo(200, 200);
-       
-       // Draw the vector
        ctx.lineTo(200 + v.elements[0] * 20, 200 - v.elements[1] * 20);
-       
-       // Stroke the path to render the line
        ctx.stroke();
 }
-  /*let v1 = document.getElementById("the_canvas").ariaValueMax;
-  var v1 = new cuon.Vector3(2.25, 2.25, 0);
-  ctx.strokeStyle = 'red';
 
-  let cx = canvas.width / 2;
-  let cy = canvas.height / 2;
-  ctx.beginPath();
-  ctx.moveTo(cx, cy);
-  ctx.lineTo(cx * 20, cy * 20);
-  ctx.stroke();
-  // ctx.clearRect(0, 0, 400, 400);
-*/
 function handleDrawEvent(ctx){
-  console.log("draw_event");
-
+  // clear canvas
   ctx.clearRect(0, 0, 400, 400);
   ctx.fillRect(0, 0, 400, 400);
 
-  //v1
+  // get v1 values from canvas, and draw
   var v1_x = parseFloat(document.getElementById('v1_x').value);
   var v1_y = parseFloat(document.getElementById('v1_y').value);
 
   var v1_newVector = new Vector3([v1_x, v1_y, 1]);
   v1.set(v1_newVector);
-
   drawVector(v1, "red", ctx);
 
-  //v2
+  // get v2 values from canvas, and draw
   var v2_x = parseFloat(document.getElementById('v2_x').value);
   var v2_y = parseFloat(document.getElementById('v2_y').value);
 
   var v2_newVector = new Vector3([v2_x, v2_y, 1]);
   v2.set(v2_newVector);
-
   drawVector(v2, "blue", ctx);
 }
 
 function handleDrawOperationEvent(ctx){
-  ctx.clearRect(0, 0, 400, 400); //clear canvas
+  //clear canvas
+  ctx.clearRect(0, 0, 400, 400); 
   ctx.fillRect(0, 0, 400, 400);
 
   handleDrawEvent(ctx); //draw v1 and v2
 
   // Read the value of the selector and call the respective Vector3 function. 
-  //console.log("operation selected is:");
-  var par=document.getElementsByName('ops')[0];
+  var par=document.getElementsByName('ops')[0]; // from stackoverflow (50-53)
   var index=par.selectedIndex;
   var option = par.options[index].text;
-  //console.log(option);
   var scal = parseFloat(document.getElementById('scalar').value);
 
+  //read selector, and run appropriate actions
   if (option === "Add"){
     var v3 = v1.add(v2);
     drawVector(v3, "green", ctx);
@@ -84,17 +61,22 @@ function handleDrawOperationEvent(ctx){
     drawVector(v3, "green", ctx);
   } 
   
-  //    console.log(scal);
   else if(option === "Divide"){
     var v3 = v1.div(scal);
     drawVector(v3, "green", ctx);
-  }
-  else if (option === "Divide"){
-    var v3 = v1.mul(scal);
-    drawVector(v3, "green", ctx);
+
+    var v4 = v2.div(scal);
+    drawVector(v4, "green", ctx);
   }
 
-  //Pt 6. 
+  else if (option === "Multiply"){
+    var v3 = v1.mul(scal);
+    drawVector(v3, "green", ctx);
+
+    var v4 = v2.mul(scal);
+    drawVector(v4, "green", ctx);
+  }
+
   else if (option === "Normalize"){
     var v4 = v1.normalize();
     var v5 = v2.normalize();
@@ -116,45 +98,44 @@ function handleDrawOperationEvent(ctx){
   }
 
   else{
-    console.log("ELSE");
+    console.log("ELSE- not an option");
   }
-  // For mul and div operations, draw two green vectors v3 = v1 * s and v4 = v2 * s.
 }
 
+// some of these look a little off, but pass tests still?
 function angleBetween(v1, v2){
   var dot_prod = Vector3.dot(v1, v2);
   var mag1 = v1.magnitude();
   var mag2 = v2.magnitude();
   var cos_alpha = dot_prod / (mag1* mag2);
-  //need to bind properly (formula a little off)
 
   var angle = Math.acos(cos_alpha) * (180 / Math.PI);
-  console.log(angle); 
+  console.log("Angle :", angle); 
 }
 
 function areaTriangle(v1,v2){
   var cross = Vector3.cross(v1, v2);
   var mag = cross.magnitude();
-  console.log(mag / 2); // also kinda off
+  console.log("Area of the triangle :", mag / 2);
 }
 
 function main() {
-    // Retrieve <canvas> element                                  <- (1)
-     var canvas = document.getElementById('the_canvas');
-     if (!canvas) {
-       console.log('Failed to retrieve the <canvas> element');
-       return;
-     }
+    // Retrieve <canvas> element                                 
+    var canvas = document.getElementById('the_canvas');
+    if (!canvas) {
+      console.log('Failed to retrieve the <canvas> element');
+      return;
+    }
 
-   // Get the rendering context for 2DCG                          <- (2)
+   // Get the rendering context for 2DCG                       
    var ctx = canvas.getContext('2d');
 
-   // Draw a blue rectangle                                       <- (3)
+   // Draw a blue rectangle                                
    ctx.fillStyle = 'black';
    ctx.fillRect(0, 0, 400, 400); // Fill a rectangle with the color
-
-   //drawVector(v1, "red", ctx);
-   var draw = document.getElementById('draw_button');
+   
+   // run functions when appopriate button is called 
+   var draw = document.getElementById('draw_button'); 
    draw.onclick = function() {
       handleDrawEvent(ctx);
    };
